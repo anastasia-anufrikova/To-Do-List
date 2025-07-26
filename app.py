@@ -4,8 +4,6 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# --- Настройка Базы Данных ---
-# Вернемся к стандартному и проверенному пути с папкой 'instance'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -31,7 +29,6 @@ def index():
             db.session.commit()
             return redirect(url_for('index'))
         except Exception as e:
-            # Это сообщение об ошибке может помочь нам, если что-то пойдет не так
             return f"Произошла ошибка при добавлении задачи: {e}", 500
     else:
         tasks = Task.query.order_by(Task.date_created).all()
@@ -65,7 +62,7 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all() # Эта строка создаст базу данных todo.db и таблицы
-    app.run(debug=True)
+#if __name__ == '__main__':
+with app.app_context():
+    db.create_all()
+#    app.run(debug=True)
